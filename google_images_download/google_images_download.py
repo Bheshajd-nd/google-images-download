@@ -38,6 +38,8 @@ import re
 import codecs
 import socket
 
+from selenium.webdriver.common.by import By #
+
 args_list = ["keywords", "keywords_from_file", "prefix_keywords", "suffix_keywords",
              "limit", "format", "color", "color_type", "usage_rights", "size",
              "exact_size", "aspect_ratio", "type", "time", "time_range", "delay", "url", "single_image",
@@ -307,14 +309,16 @@ class googleimagesdownload:
 
         # Bypass "Before you continue" if it appears
         try:
-            browser.find_element_by_css_selector("[aria-label='Accept all']").click()
+            #browser.find_element("[aria-label='Accept all']").click()
+            browser.find_element(By.CSS_SELECTOR, "[aria-label='Accept all']").click()
+
             time.sleep(1)
         except selenium.common.exceptions.NoSuchElementException:
             pass
 
         print("Getting you a lot of images. This may take a few moments...")
 
-        element = browser.find_element_by_tag_name("body")
+        element = browser.find_element(By.TAG_NAME, "body")
         # Scroll down
         for i in range(50):
             element.send_keys(Keys.PAGE_DOWN)
@@ -890,7 +894,7 @@ class googleimagesdownload:
                 break
             #code added here to attempt to implement offset correctly
             #was "count < int(arguments['offset'])" in hardikvasa code, this seems
-            # to be contrary to the implementation details. 
+            # to be contrary to the implementation details.
             elif arguments['offset'] and count <= int(arguments['offset']):
                     count += 1
                     #page = page[end_content:]
